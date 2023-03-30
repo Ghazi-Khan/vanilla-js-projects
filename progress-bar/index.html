@@ -8,13 +8,22 @@
 
     <!-- css script -->
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation&display=swap" rel="stylesheet">
   </head>
 
   <body>
 
     <div class="container">
-      <div id="progress-bar-container" class="progress-bar-container"></div>
-      <div id="show-progerss-container" class="show-progerss-container"></div>
+      <div id="progressBarContainer" class="progress-bar-container container-size">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+      <div id="showProgressContainer" class="show-progerss-container container-size"></div>
+      <div class="progress-bar-controller-container">
+        <button id="startBtn" class="btn btn-start">Start</button>
+        <button id="stopBtn" class="btn btn-stop">Stop</button>
+      </div>
     </div>
 
     <!-- js script -->
