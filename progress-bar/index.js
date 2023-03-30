@@ -8,7 +8,7 @@ const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 
 // other
-const TIMMER_WAIT = 500;
+const TIMMER_WAIT = 50;
 let progressPercent = 0;
 let isProgressRunning = false;
 
@@ -17,12 +17,16 @@ startBtn.addEventListener('click', handleStartPgress);
 stopBtn.addEventListener('click', handleStopPgress);
 
 function handleStartPgress() {
+  if (startBtn.innerHTML === 'Restart') {
+    progressPercent = 0;
+  }
   isProgressRunning = true;
   startBtn.disabled = true;
   startBtn.innerHTML = 'Start';
   startBtn.style = `cursor: not-allowed`;
   stopBtn.disabled = false;
   stopBtn.style = `cursor: pointer`;
+
   runProgress();
 }
 
@@ -48,6 +52,12 @@ function runProgress() {
       setTimeout(() => {
         runProgress();
       }, TIMMER_WAIT);
+    } else {
+      startBtn.innerHTML = 'Restart';
+      stopBtn.disabled = true;
+      stopBtn.style = `cursor: not-allowed`;
+      startBtn.disabled = false;
+      startBtn.style = `cursor: pointer`;
     }
   }
 }
