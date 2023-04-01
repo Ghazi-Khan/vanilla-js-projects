@@ -1,0 +1,35 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  background-color: darkgrey;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board {
+  background: linear-gradient(lightblue, lightyellow);
+  width: 90vmin;
+  height: 92vmin;
+  border: 2px solid black;
+
+  display: grid;
+  grid-template-rows: repeat(18, 1fr);
+  grid-template-columns: repeat(18, 1fr);
+}
+
+.snake-head {
+
+}
+
+.snake-body {
+
+}
+
+.food {
+  
+}
