@@ -23,13 +23,20 @@
 }
 
 .snake-head {
-
+  background-color: red;
+  border: 2 solid purple;
+  border-radius: 12px;
 }
 
 .snake-body {
+  background-color: green;
+  border: .25vmin solid white;
+  border-radius: 16px;
 
 }
 
 .food {
-  
+  background: linear-gradient(red, purple);
+  border: .25vmin solid black;
+  border-radius: 8px;
 }
