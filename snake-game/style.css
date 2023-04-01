@@ -9,6 +9,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+.score {
+  width: 90vmin;
+  text-align: end;
 }
 
 .board {
@@ -39,4 +45,19 @@
   background: linear-gradient(red, purple);
   border: .25vmin solid black;
   border-radius: 8px;
+  /* animation: food-blink 1.5s infinite; */
+}
+
+@keyframes food-blink {
+  0% { background: linear-gradient(red, rgb(185, 119, 185)) }
+  25% { background:  linear-gradient(red, yellow) }
+  50% { background: linear-gradient(red, purple) }
+  100% { background:  linear-gradient(red, yellow) }
+}
+
+.extra-food {
+  background: gold;
+  border: .50vmin solid red;
+  border-radius: 15px;
+  /* animation: food-blink 1.5s infinite; */
 }

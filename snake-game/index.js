@@ -1,10 +1,17 @@
 // variables
-const SPEED = 2;
+const SPEED = 4;
+const EXTRA_FOOD_AFTER_SCORE = 2;
 const GRID_SIZE = { start: 0, end: 19 };
+
 let lastTime = 0;
 let snakeDirection = { x: 0, y: 0 };
 let snake = [{ x: 11, y: 15 }];
 let snakeFood = { x: 7, y: 17 }
+let extraSnakeFood = { x: 0, y: 0 }
+let score = 0
+let extraScore = 0;
+let isExtraSnakeFoodGenerated = false;
+let isExtraSnakeFoodGeneratedOneTime = false;
 
 // utility functions
 function isCollideWithBodyPart(head, bodyPart) {
@@ -29,6 +36,7 @@ function isCollide() {
     }
   }
 
+  //  bump into wall
   if (isCollideWithWall(snakeHead)) {
     return true;
   }
@@ -47,8 +55,10 @@ function randomInteger(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function doHaveToGenerateExtraFood() {
+  return score !== 0 && score % EXTRA_FOOD_AFTER_SCORE === 0;
+}
 // game functions
-
 function main(currentTime) {
   window.requestAnimationFrame(main);
 
@@ -66,10 +76,14 @@ function gameEngine() {
     snakeDirection.y = 0;
     alert('Game Over! Press any key to play again');
     snake = [{ x: 11, y: 15 }];
+    score = 0;
   }
 
   // Snake eaten the food
   if (isSnakeEatenFood()) {
+    score++;
+    isExtraSnakeFoodGenerated = false;
+    isExtraSnakeFoodGeneratedOneTime = false;
     const snakeHead = snake[0];
     const snakeNewBodyPart = {
       x: snakeHead.x + snakeDirection.x,
@@ -82,6 +96,21 @@ function gameEngine() {
     snakeFood.y = randomInteger(2, 16);
   }
 
+  if (doHaveToGenerateExtraFood() && !isExtraSnakeFoodGenerated) {
+    console.log('extra food')
+    isExtraSnakeFoodGenerated = true;
+    extraSnakeFood.x = randomInteger(2, 16);
+    extraSnakeFood.y = randomInteger(2, 16);
+
+    setTimeout(()=> {
+      const extraFoodId = document.getElementById('extraFood');
+      if (extraFoodId) {
+        extraFoodId.remove();
+        isExtraSnakeFoodGeneratedOneTime = true;
+      }
+    }, 3000);
+  }
+
   // moving snake
   for(let i = snake.length - 2; i >= 0; i--) {
     snake[i+1] = { ...snake[i]};
@@ -91,9 +120,13 @@ function gameEngine() {
 
 
 
-  // Part 2 : Dispaly the snake and food
+  // Part 2 : Dispaly the snake, food & score
   const board = document.getElementById('board');
   board.innerHTML = '';
+
+  // Dispaly score
+  const scoreId = document.getElementById('score-value');
+  scoreId.innerHTML = score + extraScore;
 
   // Dispaly the snake
   snake.forEach((snakeBodyPart, index) => {
@@ -115,29 +148,45 @@ function gameEngine() {
   food.style.gridColumnStart= snakeFood.x;
   food.classList.add('food');
   board.append(food);
+
+  // Dispaly the extra food
+  if(isExtraSnakeFoodGenerated && !isExtraSnakeFoodGeneratedOneTime) {
+    const extraSnakeFoodElement = document.createElement('div');
+    extraSnakeFoodElement.setAttribute("id", "extraFood");
+    extraSnakeFoodElement.style.gridRowStart = extraSnakeFood.y
+    extraSnakeFoodElement.style.gridColumnStart= extraSnakeFood.x;
+    extraSnakeFoodElement.classList.add('extra-food');
+    board.append(extraSnakeFoodElement);
+  }
 }
 
 // main logic
 window.requestAnimationFrame(main);
 window.addEventListener('keydown',(e) => {
-  snakeDirection.x = 0;
-  snakeDirection.y = 1;
   switch (e.key) {
     case "ArrowUp":
-      snakeDirection.x = 0;
-      snakeDirection.y = -1;
+      if (snakeDirection.y !== 1) {
+        snakeDirection.x = 0;
+        snakeDirection.y = -1;
+      }
       break;
     case "ArrowDown":
-      snakeDirection.x = 0;
-      snakeDirection.y = 1;
+      if (snakeDirection.y !== -1) {
+        snakeDirection.x = 0;
+        snakeDirection.y = 1;
+      }
       break;
     case "ArrowLeft":
-      snakeDirection.x = -1;
-      snakeDirection.y = 0;
+      if (snakeDirection.x !== 1) {
+        snakeDirection.x = -1;
+        snakeDirection.y = 0;
+      }
       break;
     case "ArrowRight":
-      snakeDirection.x = 1;
-      snakeDirection.y = 0;
+      if (snakeDirection.x !== -1) {
+        snakeDirection.x = 1;
+        snakeDirection.y = 0;
+      }
       break;
 
     default:
